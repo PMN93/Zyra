@@ -29,22 +29,22 @@
 .dark {
   --background: 15, 23, 42;
   --foreground: 248, 250, 252;
-  --card: 30, 41, 59;
+  --card: 22, 33, 55;
   --card-foreground: 248, 250, 252;
-  --popover: 30, 41, 59;
+  --popover: 22, 33, 55;
   --popover-foreground: 248, 250, 252;
   --primary: 59, 130, 246;
   --primary-foreground: 255, 255, 255;
-  --secondary: 51, 65, 85;
+  --secondary: 30, 41, 59;
   --secondary-foreground: 248, 250, 252;
-  --muted: 51, 65, 85;
+  --muted: 30, 41, 59;
   --muted-foreground: 148, 163, 184;
-  --accent: 51, 65, 85;
+  --accent: 30, 41, 59;
   --accent-foreground: 248, 250, 252;
   --destructive: 127, 29, 29;
   --destructive-foreground: 248, 250, 252;
-  --border: 51, 65, 85;
-  --input: 51, 65, 85;
+  --border: 38, 52, 74;
+  --input: 38, 52, 74;
   --ring: 59, 130, 246;
 }
 
@@ -55,5 +55,39 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--muted-foreground) / 0.4);
+  }
+}
+
+@layer utilities {
+  /* Floating card shadow */
+  .shadow-card {
+    box-shadow:
+      0 1px 3px 0 rgb(0 0 0 / 0.06),
+      0 4px 12px -2px rgb(0 0 0 / 0.08);
+  }
+  .shadow-card-hover {
+    box-shadow:
+      0 4px 8px 0 rgb(0 0 0 / 0.08),
+      0 12px 28px -4px rgb(0 0 0 / 0.12);
+  }
+
+  /* Smooth transitions */
+  .transition-lift {
+    @apply transition-all duration-300 ease-out;
   }
 }
