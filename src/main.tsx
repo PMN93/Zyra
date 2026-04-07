@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import { ThemeProvider } from '../components/theme-provider'
 import { DashboardLayout } from './components/dashboard/DashboardLayout'
-import '../styles/globals.css'
+import './styles/globals.css'
 
 import Dashboard from './pages/Dashboard'
 import Contatos from './pages/Contatos'
