@@ -49,6 +49,9 @@
 }
 
 @layer base {
+  html {
+    font-size: 112.5%; /* 18px base — sobe tudo proporcionalmente */
+  }
   * {
     @apply border-border;
   }
