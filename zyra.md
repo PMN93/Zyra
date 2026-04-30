@@ -60,21 +60,29 @@ src/
 - `ActivityChart` (col-span-2) — BarChart com 4 barras por semana (Total Recebido, Tráfego, Indicação, Instagram), barSize=22
 - Coluna direita (col-span-1), flex-col com 2 blocos:
   - **Origem dos Leads** (flex-1) — PieChart pizza sólida com LabelList de valores dentro das fatias (branco bold 1rem), legenda embaixo, tooltip fundo escuro #1e293b
-  - **Status dos Formulários** (shrink-0) — grid 2×2 com Aprovados (emerald/CheckSquare), Reprovados (rose/XSquare), Pendente (amber/Clock), Desistente (slate/UserX); valores fixos em '0' aguardando API
+  - **Status dos Formulários** (shrink-0) — grid 2×2 com Aprovados (emerald/CheckSquare), Reprovados (rose/XSquare), Pendente (amber/Clock), Desistente (slate/UserX); valores alimentados por `MOCK_FORM_STATUS`, cursor-pointer nos itens
 
 ## Seletor de mês
 - Embutido no Header via prop `actions`
-- Navegação com setas ← → por mês/ano
-- Seta direita desabilitada no mês atual
-- Badge "Mês atual" exibida quando no mês corrente
-- Meses disponíveis no mock: 2025-01 a 2025-04
+- Navegação com setas ← → por mês/ano (ambas com `cursor-pointer`)
+- Seta direita desabilitada no mês atual (`disabled:cursor-not-allowed`)
+- Badge com largura fixa `w-[108px] whitespace-nowrap` para não causar layout shift
+- Exibe "Mês atual" (bg-primary/10, text-primary) ou "Mês anterior" (bg-muted, text-muted-foreground)
+- Meses disponíveis no mock: 2025-01 a 2025-04 + 2026-04 (mês corrente)
 
 ## Dados e lógica de estado (Dashboard.tsx)
 - `weeklyData: WeekData[]` — array de 4 semanas, cada uma com `{ semana, recebido, trafego, indicacao, instagram }`
+- `formStatus: FormStatus` — `{ aprovados, reprovados, pendente, desistente }` — alimenta o grid Status dos Formulários
 - `totals` — soma de cada métrica em todas as semanas, alimenta os KPI cards e a pizza
-- **Modo MOCK ativo:** `MOCK_DATA` (Record<string, WeekData[]>) com chaves `'YYYY-MM'`, Jan–Abr 2025
-- **Modo API (comentado):** `useEffect` + `fetch('/api/dashboard?month=YYYY-MM')` pronto para descomentar; API deve retornar `WeekData[]`
-- Para ativar a API: descomentar bloco `useEffect` em Dashboard.tsx e remover `MOCK_DATA` e o `useMemo` mocado
+- **Modo MOCK ativo:**
+  - `MOCK_DATA` (Record<string, WeekData[]>) com chaves `'YYYY-MM'`, Jan–Abr 2025
+  - `MOCK_FORM_STATUS` (Record<string, FormStatus>) com chaves `'YYYY-MM'`, Jan–Abr 2025
+- **Modo API (comentado):** bloco `useEffect` pronto para descomentar em Dashboard.tsx
+- Para ativar a API:
+  1. Descomentar o bloco `useEffect` (já inclui `setWeeklyData` e `setFormStatus`)
+  2. Remover `MOCK_DATA`, `MOCK_FORM_STATUS`, `EMPTY_FORM_STATUS` e os dois `useMemo` mocados
+  3. Trocar o import de `useState, useMemo` para `useState, useMemo, useEffect`
+  4. A API deve aceitar `?month=YYYY-MM` e retornar `{ weeks: WeekData[], formStatus: FormStatus }`
 
 ## Interface WeekData (exportada de ActivityChart.tsx)
 ```ts
@@ -120,7 +128,23 @@ Sidebar colapsável (PanelLeftClose/Open). Usuário fixo: "Maria Costa / maria@e
 - Cores por domínio: blue=recebido, amber=tráfego, indigo=indicação, violet=instagram, emerald=aprovado, rose=reprovado, amber=pendente, slate=desistente
 - Suporte a dark mode via classes `dark:` do Tailwind
 
+## Interface FormStatus (definida em Dashboard.tsx)
+```ts
+interface FormStatus {
+  aprovados:  number
+  reprovados: number
+  pendente:   number
+  desistente: number
+}
+```
+
+## Estado atual do Dashboard (✓ concluído)
+- KPI cards, gráfico de barras, pizza e status dos formulários todos funcionando com mock
+- Sem erros de TypeScript (apenas hints de depreciação do Recharts/Lucide, não críticos)
+- CSS global em `globals.css` remove outline de foco nos gráficos (`.recharts-wrapper *:focus { outline: none }`)
+- `cursor-pointer` nos botões de navegação, notificações e itens do Status dos Formulários
+
 ## Pendências / próximos passos
-- **Status dos Formulários** (Aprovados, Reprovados, Pendente, Desistente): valores fixos em '0', aguardam integração com API
-- **Integração API do Dashboard**: estrutura pronta, basta descomentar `useEffect` em Dashboard.tsx
-- API deve aceitar `?month=YYYY-MM` e retornar `WeekData[]` (4 semanas)
+- **Integração API do Dashboard**: estrutura pronta, basta seguir os 4 passos em "Para ativar a API" acima
+- API deve aceitar `?month=YYYY-MM` e retornar `{ weeks: WeekData[], formStatus: FormStatus }`
+- **Próximas páginas a construir**: Contatos, Quadro, Respostas, Formulários, Tags (e subpáginas de Relatórios/Configurações)

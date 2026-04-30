@@ -8,6 +8,17 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend, LabelList } 
 import { Inbox, Activity, Share2, Instagram, CheckSquare, XSquare, Clock, UserX, ChevronLeft, ChevronRight } from 'lucide-react'
 
 // ─── MOCK — remova este bloco inteiro quando a API estiver pronta ─────────────
+interface FormStatus { aprovados: number; reprovados: number; pendente: number; desistente: number }
+
+const MOCK_FORM_STATUS: Record<string, FormStatus> = {
+  '2025-01': { aprovados: 18, reprovados: 5,  pendente: 12, desistente: 3  },
+  '2025-02': { aprovados: 22, reprovados: 8,  pendente: 9,  desistente: 6  },
+  '2025-03': { aprovados: 35, reprovados: 11, pendente: 14, desistente: 4  },
+  '2025-04': { aprovados: 41, reprovados: 7,  pendente: 18, desistente: 8  },
+  '2026-04': { aprovados: 52, reprovados: 9,  pendente: 21, desistente: 5  },
+}
+const EMPTY_FORM_STATUS: FormStatus = { aprovados: 0, reprovados: 0, pendente: 0, desistente: 0 }
+
 const MOCK_DATA: Record<string, WeekData[]> = {
   '2025-01': [
     { semana: 'Sem 1', recebido: 20, trafego: 8,  indicacao: 5,  instagram: 7  },
@@ -33,6 +44,12 @@ const MOCK_DATA: Record<string, WeekData[]> = {
     { semana: 'Sem 3', recebido: 45, trafego: 18, indicacao: 16, instagram: 11 },
     { semana: 'Sem 4', recebido: 60, trafego: 28, indicacao: 20, instagram: 12 },
   ],
+  '2026-04': [
+    { semana: 'Sem 1', recebido: 55, trafego: 24, indicacao: 18, instagram: 13 },
+    { semana: 'Sem 2', recebido: 48, trafego: 19, indicacao: 15, instagram: 14 },
+    { semana: 'Sem 3', recebido: 62, trafego: 30, indicacao: 22, instagram: 10 },
+    { semana: 'Sem 4', recebido: 70, trafego: 35, indicacao: 25, instagram: 10 },
+  ],
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -55,13 +72,16 @@ export default function Dashboard() {
   const [month, setMonth] = useState(now.getMonth())
 
   // ─── MOCK: lê os dados do objeto local ───────────────────────────────────────
-  const weeklyData = useMemo(() => MOCK_DATA[toKey(year, month)] ?? EMPTY_WEEKS, [year, month])
-  // ─── API: substitua o bloco acima por este quando a API estiver pronta ────────
-  // const [weeklyData, setWeeklyData] = useState<WeekData[]>(EMPTY_WEEKS)
+  const weeklyData  = useMemo(() => MOCK_DATA[toKey(year, month)]       ?? EMPTY_WEEKS,       [year, month])
+  const formStatus  = useMemo(() => MOCK_FORM_STATUS[toKey(year, month)] ?? EMPTY_FORM_STATUS, [year, month])
+  // ─── API: substitua os dois blocos acima por este quando a API estiver pronta ─
+  // const [weeklyData, setWeeklyData]   = useState<WeekData[]>(EMPTY_WEEKS)
+  // const [formStatus, setFormStatus]   = useState<FormStatus>(EMPTY_FORM_STATUS)
   // useEffect(() => {
-  //   fetch(`/api/dashboard?month=${toKey(year, month)}`)
+  //   const key = toKey(year, month)
+  //   fetch(`/api/dashboard?month=${key}`)
   //     .then(r => r.json())
-  //     .then(data => setWeeklyData(data))
+  //     .then(data => { setWeeklyData(data.weeks); setFormStatus(data.formStatus) })
   // }, [year, month])
   // ─────────────────────────────────────────────────────────────────────────────
 
@@ -89,7 +109,7 @@ export default function Dashboard() {
     <div className="flex items-center gap-1.5">
       <button
         onClick={prevMonth}
-        className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+        className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -99,15 +119,13 @@ export default function Dashboard() {
       <button
         onClick={nextMonth}
         disabled={isCurrentMonth}
-        className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
       >
         <ChevronRight className="h-4 w-4" />
       </button>
-      {isCurrentMonth && (
-        <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
-          Mês atual
-        </span>
-      )}
+      <span className={`inline-block w-[108px] whitespace-nowrap text-center rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${isCurrentMonth ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+        {isCurrentMonth ? 'Mês atual' : 'Mês anterior'}
+      </span>
     </div>
   )
 
@@ -172,13 +190,13 @@ export default function Dashboard() {
                         dataKey="value"
                         position="inside"
                         style={{ fontSize: '1rem', fontWeight: 700, fill: '#fff' }}
-                        formatter={(v: number) => v > 0 ? v : ''}
+                        formatter={(v: unknown) => (Number(v) > 0 ? String(v) : '')}
                       />
                     </Pie>
                     <Tooltip
                       contentStyle={{ borderRadius: '12px', border: 'none', background: '#1e293b', fontSize: '0.75rem', color: '#f8fafc' }}
                       itemStyle={{ color: '#f8fafc' }}
-                      formatter={(value: number, name: string) => [value, name]}
+                      formatter={(value, name) => [value, name]}
                     />
                     <Legend iconType="circle" iconSize={9} wrapperStyle={{ fontSize: '0.75rem' }} />
                   </PieChart>
@@ -196,12 +214,12 @@ export default function Dashboard() {
               </div>
               <div className="grid grid-cols-2 gap-1.5">
                 {[
-                  { icon: CheckSquare, label: 'Aprovados',  value: '0', color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
-                  { icon: XSquare,     label: 'Reprovados', value: '0', color: 'text-rose-600 dark:text-rose-400',       bg: 'bg-rose-50 dark:bg-rose-500/10'       },
-                  { icon: Clock,       label: 'Pendente',   value: '0', color: 'text-amber-600 dark:text-amber-400',     bg: 'bg-amber-50 dark:bg-amber-500/10'     },
-                  { icon: UserX,       label: 'Desistente', value: '0', color: 'text-slate-500 dark:text-slate-400',     bg: 'bg-slate-100 dark:bg-slate-500/10'    },
+                  { icon: CheckSquare, label: 'Aprovados',  value: String(formStatus.aprovados),  color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
+                  { icon: XSquare,     label: 'Reprovados', value: String(formStatus.reprovados), color: 'text-rose-600 dark:text-rose-400',       bg: 'bg-rose-50 dark:bg-rose-500/10'       },
+                  { icon: Clock,       label: 'Pendente',   value: String(formStatus.pendente),   color: 'text-amber-600 dark:text-amber-400',     bg: 'bg-amber-50 dark:bg-amber-500/10'     },
+                  { icon: UserX,       label: 'Desistente', value: String(formStatus.desistente), color: 'text-slate-500 dark:text-slate-400',     bg: 'bg-slate-100 dark:bg-slate-500/10'    },
                 ].map(({ icon: Icon, label, value, color, bg }) => (
-                  <div key={label} className="flex items-center gap-2 rounded-xl p-2 bg-muted/30 hover:bg-muted/50 transition-colors">
+                  <div key={label} className="flex items-center gap-2 rounded-xl p-2 bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer">
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${bg}`}>
                       <Icon className={`h-3.5 w-3.5 ${color}`} />
                     </div>

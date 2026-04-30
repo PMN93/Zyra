@@ -45,7 +45,7 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
         </div>
 
         {/* Notifications */}
-        <button className="relative flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-background text-muted-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary">
+        <button className="relative flex h-8 w-8 items-center justify-center rounded-xl border border-border bg-background text-muted-foreground transition-all hover:border-primary/40 hover:bg-primary/5 hover:text-primary cursor-pointer">
           <Bell className="h-4 w-4" />
           <span className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-primary text-[0.5rem] font-bold text-primary-foreground">
             3
