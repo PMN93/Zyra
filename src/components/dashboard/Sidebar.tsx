@@ -70,7 +70,7 @@ function NavButton({
   const iconEl = <item.icon className={cn('h-[18px] w-[18px] shrink-0', active ? 'text-primary-foreground' : '')} />
   const labelEl = !isCollapsed && <span className="truncate">{item.label}</span>
   const badgeEl = !isCollapsed && item.badge && (
-    <span className={cn('rounded-full px-1.5 py-0.5 text-[10px] font-semibold leading-none', active ? 'bg-white/20 text-primary-foreground' : 'bg-primary/10 text-primary')}>
+    <span className={cn('rounded-full px-1.5 py-0.5 text-xs font-semibold leading-none', active ? 'bg-white/20 text-primary-foreground' : 'bg-primary/10 text-primary')}>
       {item.badge}
     </span>
   )
@@ -159,7 +159,7 @@ export function Sidebar() {
             <>
               <div className="overflow-hidden">
                 <p className="text-sm font-bold leading-none text-foreground tracking-tight">Zyra</p>
-                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-widest text-muted-foreground">CRM</p>
+                <p className="mt-0.5 text-xs font-medium uppercase tracking-widest text-muted-foreground">CRM</p>
               </div>
               <button
                 onClick={() => setIsCollapsed(true)}
@@ -176,7 +176,7 @@ export function Sidebar() {
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto overflow-x-hidden px-2.5 py-3 space-y-4">
           <div>
-            {!isCollapsed && <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">Menu</p>}
+            {!isCollapsed && <p className="mb-1.5 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">Menu</p>}
             <ul className="space-y-0.5">
               {mainNavItems.map(item => (
                 <NavButton key={item.label} item={item} isCollapsed={isCollapsed} isExpanded={expandedItems.includes(item.label)} onToggle={() => handleItemClick(item)} pathname={pathname} />
@@ -184,7 +184,7 @@ export function Sidebar() {
             </ul>
           </div>
           <div>
-            {!isCollapsed && <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">Sistema</p>}
+            {!isCollapsed && <p className="mb-1.5 px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground/60">Sistema</p>}
             <ul className="space-y-0.5">
               {systemNavItems.map(item => (
                 <NavButton key={item.label} item={item} isCollapsed={isCollapsed} isExpanded={expandedItems.includes(item.label)} onToggle={() => handleItemClick(item)} pathname={pathname} />
@@ -207,14 +207,14 @@ export function Sidebar() {
 
           <div className={cn('flex items-center gap-2.5 rounded-xl p-2 transition-colors hover:bg-muted/60 cursor-pointer', isCollapsed && 'justify-center')}>
             <div className="relative shrink-0">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-blue-400 text-[11px] font-bold text-white shadow-md shadow-primary/20">MC</div>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-blue-400 text-xs font-bold text-white shadow-md shadow-primary/20">MC</div>
               <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-500" />
             </div>
             {!isCollapsed && (
               <>
                 <div className="flex-1 overflow-hidden min-w-0">
                   <p className="truncate text-xs font-semibold text-foreground leading-none">Maria Costa</p>
-                  <p className="truncate text-[10px] text-muted-foreground mt-0.5">maria@email.com</p>
+                  <p className="truncate text-xs text-muted-foreground mt-0.5">maria@email.com</p>
                 </div>
                 <button className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground transition-colors">
                   <LogOut className="h-3.5 w-3.5" />

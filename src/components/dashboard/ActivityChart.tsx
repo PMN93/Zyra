@@ -9,14 +9,23 @@ import {
   Legend,
 } from "recharts";
 
-const data = [
-  { dia: "Seg", respostas: 38, contatos: 12, tarefas: 20 },
-  { dia: "Ter", respostas: 52, contatos: 19, tarefas: 31 },
-  { dia: "Qua", respostas: 61, contatos: 27, tarefas: 18 },
-  { dia: "Qui", respostas: 45, contatos: 14, tarefas: 24 },
-  { dia: "Sex", respostas: 78, contatos: 33, tarefas: 42 },
-  { dia: "Sáb", respostas: 29, contatos: 8, tarefas: 11 },
-  { dia: "Dom", respostas: 15, contatos: 5, tarefas: 7 },
+export interface WeekData {
+  semana: string;
+  recebido: number;
+  trafego: number;
+  indicacao: number;
+  instagram: number;
+}
+
+interface ActivityChartProps {
+  data: WeekData[];
+}
+
+const BARS = [
+  { key: "recebido",  name: "Total Recebido", color: "#3b82f6" },
+  { key: "trafego",   name: "Tráfego",        color: "#f59e0b" },
+  { key: "indicacao", name: "Indicação",       color: "#6366f1" },
+  { key: "instagram", name: "Instagram",       color: "#8b5cf6" },
 ];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -26,7 +35,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         <p className="mb-2 text-xs font-semibold text-foreground">{label}</p>
         {payload.map((entry: any) => (
           <div key={entry.name} className="flex items-center gap-2 text-xs">
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.fill }} />
+            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: entry.fill }} />
             <span className="text-muted-foreground">{entry.name}:</span>
             <span className="font-semibold text-foreground">{entry.value}</span>
           </div>
@@ -37,16 +46,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function ActivityChart() {
+export function ActivityChart({ data }: ActivityChartProps) {
   return (
-    <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-4 shadow-md">
-      <div className="mb-3 flex items-start justify-between shrink-0">
+    <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-md">
+      <div className="mb-4 flex items-start justify-between shrink-0">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Atividade Semanal</h3>
-          <p className="mt-0.5 text-[11px] text-muted-foreground">Respostas, contatos e tarefas por dia</p>
+          <h3 className="text-sm font-semibold text-foreground">Atividade Mensal</h3>
+          <p className="mt-0.5 text-xs text-muted-foreground">Leads por semana — Recebido, Tráfego, Indicação e Instagram</p>
         </div>
-        <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium text-primary">
-          Última semana
+        <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+          Este mês
         </span>
       </div>
 
@@ -54,31 +63,33 @@ export function ActivityChart() {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
-            barSize={8}
-            barGap={2}
-            margin={{ top: 4, right: 4, left: -22, bottom: 0 }}
+            barSize={22}
+            barGap={3}
+            barCategoryGap="30%"
+            margin={{ top: 8, right: 8, left: -16, bottom: 4 }}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(148,163,184,0.15)" />
             <XAxis
-              dataKey="dia"
-              tick={{ fontSize: 11, fill: "rgb(100,116,139)" }}
+              dataKey="semana"
+              tick={{ fontSize: '0.75rem', fill: "rgb(100,116,139)" }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "rgb(100,116,139)" }}
+              tick={{ fontSize: '0.75rem', fill: "rgb(100,116,139)" }}
               axisLine={false}
               tickLine={false}
+              allowDecimals={false}
             />
             <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(148,163,184,0.08)" }} />
             <Legend
               iconType="circle"
-              iconSize={7}
-              wrapperStyle={{ fontSize: "11px", paddingTop: "8px" }}
+              iconSize={9}
+              wrapperStyle={{ fontSize: "0.75rem", paddingTop: "12px" }}
             />
-            <Bar dataKey="respostas" name="Respostas" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="contatos"  name="Contatos"  fill="#10b981" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="tarefas"   name="Tarefas"   fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+            {BARS.map(({ key, name, color }) => (
+              <Bar key={key} dataKey={key} name={name} fill={color} radius={[4, 4, 0, 0]} />
+            ))}
           </BarChart>
         </ResponsiveContainer>
       </div>
