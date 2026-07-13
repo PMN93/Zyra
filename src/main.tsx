@@ -5,13 +5,12 @@ import { ThemeProvider } from '../components/theme-provider'
 import { DashboardLayout } from './components/dashboard/DashboardLayout'
 import './styles/globals.css'
 
-// IMPORTAÇÃO CORRIGIDA: Importamos apenas a página mãe do Login
 import Inicial from './pages/Inicial'
-
-import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import EsqueciSenha from './pages/EsqueciSenha'
 import Cadastrar from './pages/Cadastrar'
+
+import Dashboard from './pages/Dashboard'
 import Contatos from './pages/Contatos'
 import Quadro from './pages/Quadro'
 import Respostas from './pages/Respostas'
@@ -34,30 +33,30 @@ import PermissoesMenu from './pages/configuracoes/PermissoesMenu'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Navigate to="/inicial" replace />, 
+    element: <Navigate to="/inicial" replace />,
   },
   {
     path: '/inicial',
-    element: <Inicial />, // O componente Login gerencia internamente as sub-rotas
+    element: <Inicial />,
   },
   {
     path: '/login',
-    element: <Login />, // O componente Login gerencia internamente as sub-rotas
-  },
-   {
-    path: '/esquecisenha',
-    element: <EsqueciSenha />, // O componente Login gerencia internamente as sub-rotas
-  },
-   {
-    path: '/cadastrar',
-    element: <Cadastrar />, // O componente Login gerencia internamente as sub-rotas
+    element: <Login />,
   },
   {
-    path: '/dashboard', 
+    path: '/esquecisenha',
+    element: <EsqueciSenha />,
+  },
+  {
+    path: '/cadastrar',
+    element: <Cadastrar />,
+  },
+  {
+    path: '/dashboard',
     element: <DashboardLayout />,
     children: [
-      { index: true,                   element: <Dashboard />          }, 
-      { path: 'contatos',              element: <Contatos />           }, 
+      { index: true,                   element: <Dashboard />          },
+      { path: 'contatos',              element: <Contatos />           },
       { path: 'quadro',                element: <Quadro />             },
       { path: 'respostas',             element: <Respostas />          },
       { path: 'formularios',           element: <Formularios />        },

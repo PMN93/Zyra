@@ -53,18 +53,18 @@ export function StatsCard({
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-medium text-muted-foreground truncate leading-none">{title}</p>
+          <p className="text-xs font-medium text-muted-foreground truncate leading-none">{title}</p>
           <div className="mt-1 flex items-baseline gap-2">
             <p className="text-xl font-bold text-foreground leading-none">{value}</p>
             {trend && (
-              <span className={cn("flex items-center gap-0.5 text-[10px] font-medium leading-none", trendColor)}>
+              <span className={cn("flex items-center gap-0.5 text-xs font-medium leading-none", trendColor)}>
                 <TrendIcon className="h-2.5 w-2.5" />
                 {trend}
               </span>
             )}
           </div>
           {subtitle && (
-            <p className="mt-0.5 text-[10px] text-muted-foreground truncate leading-none">{subtitle}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground truncate leading-none">{subtitle}</p>
           )}
         </div>
       </div>

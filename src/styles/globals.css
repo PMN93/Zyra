@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.recharts-wrapper *:focus {
+  outline: none;
+}
+
 :root {
   /* RGB com VÍRGULAS - O mais seguro para o seu setup */
   --background: 250, 250, 250;
@@ -49,6 +53,9 @@
 }
 
 @layer base {
+  html {
+    font-size: 112.5%; /* 18px base — sobe tudo proporcionalmente */
+  }
   * {
     @apply border-border;
   }

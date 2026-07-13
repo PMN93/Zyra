@@ -12,6 +12,7 @@ interface CompletionDonutProps {
   sublabel?: string;
   color?: string;
   bgColor?: string;
+  size?: number;
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -31,10 +32,15 @@ export function CompletionDonut({
   sublabel,
   color = "#3b82f6",
   bgColor = "#e2e8f0",
+  size = 110,
 }: CompletionDonutProps) {
   const filled = value <= 0 ? 1 : value;
   const empty = 100 - filled;
   const isZero = value <= 0;
+
+  const innerRadius = Math.round(size * 0.31);
+  const outerRadius = Math.round(size * 0.45);
+  const fontSize = size >= 160 ? 'text-3xl' : 'text-xl';
 
   const data = [
     { name: "Concluído", value: filled },
@@ -42,16 +48,16 @@ export function CompletionDonut({
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center gap-1">
-      <div className="relative h-[110px] w-[110px]">
+    <div className="flex flex-col items-center justify-center gap-2">
+      <div className="relative" style={{ height: size, width: size }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={34}
-              outerRadius={50}
+              innerRadius={innerRadius}
+              outerRadius={outerRadius}
               startAngle={90}
               endAngle={-270}
               dataKey="value"
@@ -66,7 +72,7 @@ export function CompletionDonut({
 
         {/* Center label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold text-foreground">{value}%</span>
+          <span className={`${fontSize} font-bold text-foreground`}>{value}%</span>
         </div>
       </div>
 
