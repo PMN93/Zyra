@@ -17,38 +17,38 @@ interface NavItem {
 }
 
 const mainNavItems: NavItem[] = [
-  { label: 'Dashboard',   icon: LayoutDashboard, href: '/'           },
-  { label: 'Contatos',    icon: Users,            href: '/contatos',  badge: '643' },
-  { label: 'Quadro',      icon: LayoutGrid,       href: '/quadro'     },
-  { label: 'Respostas',   icon: MessageSquare,    href: '/respostas'  },
-  { label: 'Formulários', icon: FileText,         href: '/formularios'},
-  { label: 'Tags',        icon: Tags,             href: '/tags'       },
+  { label: 'Dashboard',   icon: LayoutDashboard, href: '/dashboard' }, // Se a home do dashboard for /dashboard
+  { label: 'Contatos',    icon: Users,           href: '/dashboard/contatos',  badge: '643' },
+  { label: 'Quadro',      icon: LayoutGrid,      href: '/dashboard/quadro'     },
+  { label: 'Respostas',   icon: MessageSquare,    href: '/dashboard/respostas'  },
+  { label: 'Formulários', icon: FileText,         href: '/dashboard/formularios'},
+  { label: 'Tags',        icon: Tags,             href: '/dashboard/tags'       },
 ]
 
 const systemNavItems: NavItem[] = [
   {
-    label: 'Relatórios', icon: BarChart3, href: '/relatorios',
+    label: 'Relatórios', icon: BarChart3, href: '/dashboard/relatorios',
     subItems: [
-      { label: 'Relatório de Kanban',        href: '/relatorios/kanban'       },
-      { label: 'Relatório de Agendamentos',  href: '/relatorios/agendamentos' },
-      { label: 'Relatório de Atendimentos',  href: '/relatorios/atendimentos' },
-      { label: 'Relatório de Formulários',   href: '/relatorios/formularios'  },
+      { label: 'Relatório de Kanban',        href: '/dashboard/relatorios/kanban'       },
+      { label: 'Relatório de Agendamentos',  href: '/dashboard/relatorios/agendamentos' },
+      { label: 'Relatório de Atendimentos',  href: '/dashboard/relatorios/atendimentos' },
+      { label: 'Relatório de Formulários',   href: '/dashboard/relatorios/formularios'  },
     ],
   },
   {
-    label: 'Configurações', icon: Settings, href: '/configuracoes',
+    label: 'Configurações', icon: Settings, href: '/dashboard/configuracoes',
     subItems: [
-      { label: 'Criar Quadros',         href: '/configuracoes/criarquadros'    },
-      { label: 'Criar Formulário',      href: '/configuracoes/criarfomulario'  },
-      { label: 'Status de Respostas',   href: '/configuracoes/statusrespostas' },
-      { label: 'Gerenciar Usuários',    href: '/configuracoes/gernciarusuarios'},
-      { label: 'Permissões de Menu',    href: '/configuracoes/permissoesmenu'  },
+      { label: 'Criar Quadros',         href: '/dashboard/configuracoes/criarquadros'    },
+      { label: 'Criar Formulário',      href: '/dashboard/configuracoes/criarfomulario'  },
+      { label: 'Status de Respostas',   href: '/dashboard/configuracoes/statusrespostas' },
+      { label: 'Gerenciar Usuários',    href: '/dashboard/configuracoes/gernciarusuarios'},
+      { label: 'Permissões de Menu',    href: '/dashboard/configuracoes/permissoesmenu'  },
     ],
   },
 ]
 
 function isItemActive(href: string, pathname: string) {
-  if (href === '/') return pathname === '/'
+  if (href === '/dashboard') return pathname === '/dashboard'
   return pathname === href || pathname.startsWith(href + '/')
 }
 
