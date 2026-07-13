@@ -5,6 +5,11 @@ import { ThemeProvider } from '../components/theme-provider'
 import { DashboardLayout } from './components/dashboard/DashboardLayout'
 import './styles/globals.css'
 
+import Inicial from './pages/Inicial'
+import Login from './pages/Login'
+import EsqueciSenha from './pages/EsqueciSenha'
+import Cadastrar from './pages/Cadastrar'
+
 import Dashboard from './pages/Dashboard'
 import Contatos from './pages/Contatos'
 import Quadro from './pages/Quadro'
@@ -28,6 +33,26 @@ import PermissoesMenu from './pages/configuracoes/PermissoesMenu'
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Navigate to="/inicial" replace />,
+  },
+  {
+    path: '/inicial',
+    element: <Inicial />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/esquecisenha',
+    element: <EsqueciSenha />,
+  },
+  {
+    path: '/cadastrar',
+    element: <Cadastrar />,
+  },
+  {
+    path: '/dashboard',
     element: <DashboardLayout />,
     children: [
       { index: true,                   element: <Dashboard />          },
