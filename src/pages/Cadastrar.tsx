@@ -11,6 +11,7 @@ export default function Cadastrar() {
   const [showPassword, setShowPassword] = useState(false)
   const [isDark, setIsDark] = useState(false)
 
+  
   useEffect(() => {
     const root = document.documentElement
     if (isDark) {
