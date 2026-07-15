@@ -44,6 +44,22 @@ const getAvatarColor = (id: number) => {
   return avatarColors[id % avatarColors.length]
 }
 
+const formatarTelefone = (value: string) => {
+  const nums = value.replace(/\D/g, '')
+  const apenasNumeros = nums.slice(0, 11)
+
+  if (apenasNumeros.length <= 2) {
+    return apenasNumeros
+  }
+  if (apenasNumeros.length <= 6) {
+    return `(${apenasNumeros.slice(0, 2)}) ${apenasNumeros.slice(2)}`
+  }
+  if (apenasNumeros.length <= 10) {
+    return `(${apenasNumeros.slice(0, 2)}) ${apenasNumeros.slice(2, 6)}-${apenasNumeros.slice(6)}`
+  }
+  return `(${apenasNumeros.slice(0, 2)}) ${apenasNumeros.slice(2, 7)}-${apenasNumeros.slice(7)}`
+}
+
 type TipoFiltro = 'todos' | 'nome' | 'tag' | 'telefone'
 
 export default function Contatos() {
@@ -54,8 +70,17 @@ export default function Contatos() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  const [isNewContactModalOpen, setIsNewContactModalOpen] = useState(false)
   const [editingContato, setEditingContato] = useState<Contato | null>(null)
   const [deletingContato, setDeletingContato] = useState<Contato | null>(null)
+
+  const [newContato, setNewContato] = useState<Omit<Contato, 'id'>>({
+    nome: '',
+    email: '',
+    telefone: '',
+    tag: 'Cliente',
+    status: 'Ativo'
+  })
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -97,6 +122,14 @@ export default function Contatos() {
     }
   }
 
+  const handleCreateNewContact = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const newId = contatos.length > 0 ? Math.max(...contatos.map(c => c.id)) + 1 : 1
+    setContatos(prev => [...prev, { ...newContato, id: newId }])
+    setNewContato({ nome: '', email: '', telefone: '', tag: 'Cliente', status: 'Ativo' })
+    setIsNewContactModalOpen(false)
+  }
+
   const handleSaveEdit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!editingContato) return
@@ -112,9 +145,9 @@ export default function Contatos() {
   }
 
   return (
-    <div className="flex flex-col h-full gap-4 relative bg-[#f8fafc] p-6">
+    // AJUSTADO: Adicionado w-full e overflow-hidden para garantir fechamento do layout
+    <div className="flex flex-col h-full w-full gap-4 relative bg-[#f8fafc] p-6 overflow-hidden">
       
-      {/* CABEÇALHO */}
       <header className="flex items-center justify-between w-full bg-white rounded-[24px] px-6 py-4 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.08),_0_8px_10px_-6px_rgba(0,0,0,0.08)] shrink-0">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-blue-500 border border-blue-100/50">
@@ -146,10 +179,8 @@ export default function Contatos() {
         </div>
       </header>
 
-      {/* BARRA DE FILTROS E BUSCA */}
       <div className="flex items-center justify-between gap-3 shrink-0 mt-2">
         <div className="flex items-center gap-3 flex-1 max-w-xl">
-          {/* Input de Busca Principal */}
           <div className="relative w-80 shadow-[0_4px_12px_rgba(0,0,0,0.02)] rounded-2xl">
             <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input 
@@ -161,7 +192,6 @@ export default function Contatos() {
             />
           </div>
 
-          {/* Botão de Filtrar */}
           <div className="relative" ref={dropdownRef}>
             <button 
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -181,7 +211,6 @@ export default function Contatos() {
               </span>
             </button>
 
-            {/* Menu Dropdown */}
             {isDropdownOpen && (
               <div className="absolute left-0 mt-2 w-48 rounded-2xl border border-slate-100 bg-white p-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.06)] z-30 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="px-2.5 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -224,14 +253,15 @@ export default function Contatos() {
           </div>
         </div>
 
-        {/* Botão Novo Contato */}
-        <button className="flex h-10 items-center justify-center gap-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-[0_8px_20px_rgba(37,99,235,0.24)] transition-all hover:translate-y-[-1px] active:translate-y-[0px] px-5">
+        <button 
+          onClick={() => setIsNewContactModalOpen(true)}
+          className="flex h-10 items-center justify-center gap-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-[0_8px_20px_rgba(37,99,235,0.24)] transition-all hover:translate-y-[-1px] active:translate-y-[0px] px-5"
+        >
           <Plus className="h-4 w-4" />
           Novo Contato
         </button>
       </div>
 
-      {/* TABELA DE CONTATOS */}
       <div className="flex-1 overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-[0_12px_40px_rgba(0,0,0,0.03)] flex flex-col">
         <div className="flex-1 overflow-auto">
           <table className="w-full border-collapse text-left text-xs table-fixed">
@@ -258,7 +288,6 @@ export default function Contatos() {
                       <div className="flex flex-col truncate">
                         <span className="font-semibold text-slate-800 text-sm truncate">{contato.nome}</span>
                         <div className="flex items-center gap-1.5 mt-0.5">
-                          {/* Bolinha de status ajustada (Verde para Ativo, Cinza para Inativo) */}
                           <span className={cn(
                             "h-1.5 w-1.5 rounded-full",
                             contato.status === 'Ativo' ? 'bg-emerald-500' : 'bg-slate-300'
@@ -325,7 +354,107 @@ export default function Contatos() {
         </div>
       </div>
 
-      {/* ================= MODAL EDITAR CONTATO ================= */}
+      {isNewContactModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-md bg-white border border-slate-100 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden">
+            <div className="p-5 pb-3 flex justify-between items-start border-b border-slate-100">
+              <div>
+                <h2 className="text-sm font-bold text-slate-800">Novo Contato</h2>
+                <p className="text-[10px] text-slate-400 mt-0.5">Preencha as informações para cadastrar um novo contato</p>
+              </div>
+              <button 
+                onClick={() => setIsNewContactModalOpen(false)} 
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+              >
+                <X className="h-4.5 w-4.5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateNewContact} className="p-5 space-y-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-slate-400">Nome Completo</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ex: João da Silva"
+                  value={newContato.nome}
+                  onChange={(e) => setNewContato({ ...newContato, nome: e.target.value })}
+                  className="h-9.5 w-full rounded-xl border border-slate-100 bg-slate-50/50 px-3 text-xs text-slate-700 placeholder:text-slate-400 focus:border-blue-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-slate-400">Email</label>
+                <input 
+                  type="email" 
+                  required
+                  placeholder="Ex: joao@email.com"
+                  value={newContato.email}
+                  onChange={(e) => setNewContato({ ...newContato, email: e.target.value })}
+                  className="h-9.5 w-full rounded-xl border border-slate-100 bg-slate-50/50 px-3 text-xs text-slate-700 placeholder:text-slate-400 focus:border-blue-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-slate-400">Telefone</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="Ex: (11) 99999-9999"
+                  value={newContato.telefone}
+                  onChange={(e) => setNewContato({ ...newContato, telefone: formatarTelefone(e.target.value) })}
+                  className="h-9.5 w-full rounded-xl border border-slate-100 bg-slate-50/50 px-3 text-xs text-slate-700 placeholder:text-slate-400 focus:border-blue-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-slate-400">Tag</label>
+                  <select 
+                    value={newContato.tag}
+                    onChange={(e) => setNewContato({ ...newContato, tag: e.target.value as Contato['tag'] })}
+                    className="h-9.5 w-full rounded-xl border border-slate-100 bg-slate-50/50 px-2.5 text-xs text-slate-700 focus:border-blue-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5"
+                  >
+                    <option value="Cliente">Cliente</option>
+                    <option value="Lead">Lead</option>
+                    <option value="Prospect">Prospect</option>
+                    <option value="Parceiro">Parceiro</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-slate-400">Status</label>
+                  <select 
+                    value={newContato.status}
+                    onChange={(e) => setNewContato({ ...newContato, status: e.target.value as Contato['status'] })}
+                    className="h-9.5 w-full rounded-xl border border-slate-100 bg-slate-50/50 px-2.5 text-xs text-slate-700 focus:border-blue-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5"
+                  >
+                    <option value="Ativo">Ativo</option>
+                    <option value="Inativo">Inativo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-2.5 justify-end pt-3 border-t border-slate-100">
+                <button 
+                  type="button"
+                  onClick={() => setIsNewContactModalOpen(false)} 
+                  className="px-4 py-2 rounded-xl border border-slate-100 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-500 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-md shadow-blue-600/10 transition-colors"
+                >
+                  Cadastrar Contato
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {editingContato && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-md bg-white border border-slate-100 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden">
@@ -371,7 +500,7 @@ export default function Contatos() {
                   type="text" 
                   required
                   value={editingContato.telefone}
-                  onChange={(e) => setEditingContato({ ...editingContato, telefone: e.target.value })}
+                  onChange={(e) => setEditingContato({ ...editingContato, telefone: formatarTelefone(e.target.value) })}
                   className="h-9.5 w-full rounded-xl border border-slate-100 bg-slate-50/50 px-3 text-xs text-slate-700 focus:border-blue-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/5"
                 />
               </div>
@@ -424,7 +553,6 @@ export default function Contatos() {
         </div>
       )}
 
-      {/* ================= MODAL CONFIRMAR EXCLUSÃO ================= */}
       {deletingContato && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4">
           <div className="w-full max-w-sm bg-white border border-slate-100 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-5 flex flex-col gap-4">

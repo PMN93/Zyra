@@ -100,6 +100,7 @@ export default function Respostas() {
 
   const [activeDetailsLead, setActiveDetailsLead] = useState<Lead | null>(null)
   const [leadToDelete, setLeadToDelete] = useState<Lead | null>(null)
+  const [activeDropdownId, setActiveDropdownId] = useState<number | null>(null)
 
   const navigate = useNavigate()
 
@@ -123,10 +124,10 @@ export default function Respostas() {
     return matchesSearch && matchesForm && matchesStatus && matchesDate
   })
 
-  const toggleStatus = (id: number) => {
+  const updateStatus = (id: number, status: 'Aprovado' | 'Reprovado') => {
     setLeads(prev => prev.map(lead => {
       if (lead.id === id) {
-        return { ...lead, status: lead.status === 'Aprovado' ? 'Reprovado' : 'Aprovado' }
+        return { ...lead, status }
       }
       return lead
     }))
@@ -303,7 +304,7 @@ export default function Respostas() {
                       {lead.data}
                     </td>
                     
-                    {/* COLUNA WHATSAPP: Exibe "Chamado" em verde ou "Não chamado" em cinza discreto */}
+                    {/* COLUNA WHATSAPP */}
                     <td className="px-5 py-3.5 text-center font-medium">
                       {lead.chamado ? (
                         <span className="inline-flex items-center justify-center text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 font-bold text-[10px]">
@@ -316,9 +317,13 @@ export default function Respostas() {
                       )}
                     </td>
 
-                    <td className="px-5 py-3.5">
+                    {/* COLUNA STATUS COM DROPDOWN */}
+                    <td className="px-5 py-3.5 relative">
                       <button 
-                        onClick={() => toggleStatus(lead.id)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setActiveDropdownId(activeDropdownId === lead.id ? null : lead.id)
+                        }}
                         className={cn(
                           "inline-flex h-6 items-center gap-1.5 rounded-lg border px-2 text-[10px] font-bold transition-all",
                           lead.status === 'Aprovado'
@@ -329,7 +334,49 @@ export default function Respostas() {
                         {lead.status}
                         <ChevronDown className="h-3 w-3 opacity-60" />
                       </button>
+
+                      {/* Dropdown Menu */}
+                      {activeDropdownId === lead.id && (
+                        <>
+                          {/* Camada invisível para fechar ao clicar fora */}
+                          <div 
+                            className="fixed inset-0 z-20 cursor-default" 
+                            onClick={() => setActiveDropdownId(null)}
+                          />
+                          
+                          {/* Opções do Dropdown - Fundos e Cores de Textos Removidos */}
+                          <div className="absolute left-5 mt-1 w-28 rounded-xl border border-border bg-card shadow-lg z-30 py-1 flex flex-col">
+                            <button
+                              onClick={() => {
+                                updateStatus(lead.id, 'Aprovado')
+                                setActiveDropdownId(null)
+                              }}
+                              className={cn(
+                                "flex w-full items-center px-3 py-2 text-[10px] font-bold text-left transition-colors hover:bg-muted/50",
+                                lead.status === 'Aprovado' ? "text-foreground" : "text-muted-foreground"
+                              )}
+                            >
+                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 mr-2" />
+                              Aprovado
+                            </button>
+                            <button
+                              onClick={() => {
+                                updateStatus(lead.id, 'Reprovado')
+                                setActiveDropdownId(null)
+                              }}
+                              className={cn(
+                                "flex w-full items-center px-3 py-2 text-[10px] font-bold text-left transition-colors hover:bg-muted/50",
+                                lead.status === 'Reprovado' ? "text-foreground" : "text-muted-foreground"
+                              )}
+                            >
+                              <span className="h-1.5 w-1.5 rounded-full bg-rose-500 mr-2" />
+                              Reprovado
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </td>
+
                     <td className="px-5 py-3.5 text-right">
                       <div className="inline-flex gap-1.5">
                         <button 
