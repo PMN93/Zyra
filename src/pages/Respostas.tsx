@@ -1,7 +1,7 @@
 import { Search, RotateCcw, Eye, Trash2, ChevronDown, Download, Sparkles, Bell, X, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom' // 1. Importado o navigate do React Router
+import { useNavigate } from 'react-router-dom'
 
 interface Lead {
   id: number
@@ -19,6 +19,7 @@ interface Lead {
   bairro?: string
   cidade?: string
   estado?: string
+  chamado?: boolean
 }
 
 const initialLeads: Lead[] = [
@@ -81,7 +82,17 @@ const initialLeads: Lead[] = [
 ]
 
 export default function Respostas() {
-  const [leads, setLeads] = useState<Lead[]>(initialLeads)
+  const [leads, setLeads] = useState<Lead[]>(() => {
+    // Carrega o histórico do localStorage ao montar o componente
+    const savedChamados = localStorage.getItem('leads_chamados')
+    const chamadosIds = savedChamados ? JSON.parse(savedChamados) : []
+    
+    return initialLeads.map(lead => ({
+      ...lead,
+      chamado: chamadosIds.includes(lead.id)
+    }))
+  })
+
   const [search, setSearch] = useState('')
   const [selectedForm, setSelectedForm] = useState('Todos os formulários')
   const [selectedStatus, setSelectedStatus] = useState('Todos os status')
@@ -90,7 +101,7 @@ export default function Respostas() {
   const [activeDetailsLead, setActiveDetailsLead] = useState<Lead | null>(null)
   const [leadToDelete, setLeadToDelete] = useState<Lead | null>(null)
 
-  const navigate = useNavigate() // 2. Inicializado o hook de navegação
+  const navigate = useNavigate()
 
   const handleClearFilters = () => {
     setSearch('')
@@ -126,6 +137,32 @@ export default function Respostas() {
       setLeads(prev => prev.filter(l => l.id !== leadToDelete.id))
       setLeadToDelete(null)
     }
+  }
+
+  const handleWhatsappClick = (lead: Lead) => {
+    const savedChamados = localStorage.getItem('leads_chamados')
+    const chamadosIds: number[] = savedChamados ? JSON.parse(savedChamados) : []
+    
+    if (!chamadosIds.includes(lead.id)) {
+      chamadosIds.push(lead.id)
+      localStorage.setItem('leads_chamados', JSON.stringify(chamadosIds))
+    }
+
+    setLeads(prevLeads => prevLeads.map(item => {
+      if (item.id === lead.id) {
+        return { ...item, chamado: true }
+      }
+      return item
+    }))
+
+    navigate('/dashboard/whatsapp', { 
+      state: { 
+        novoContato: { 
+          nome: lead.nome, 
+          telefone: lead.telefone 
+        } 
+      } 
+    })
   }
 
   return (
@@ -241,7 +278,8 @@ export default function Respostas() {
                   <th className="px-5 py-3">Telefone</th>
                   <th className="px-5 py-3">CPF</th>
                   <th className="px-5 py-3">Data</th>
-                  <th className="px-5 py-3 text-center">Pontuação</th>
+                  {/* Nome da coluna WhatsApp */}
+                  <th className="px-5 py-3 text-center">WhatsApp</th>
                   <th className="px-5 py-3">Status</th>
                   <th className="px-5 py-3 text-right">Ações</th>
                 </tr>
@@ -264,9 +302,20 @@ export default function Respostas() {
                     <td className="px-5 py-3.5 text-muted-foreground">
                       {lead.data}
                     </td>
-                    <td className="px-5 py-3.5 text-center text-muted-foreground">
-                      {lead.pontuacao}
+                    
+                    {/* COLUNA WHATSAPP: Exibe "Chamado" em verde ou "Não chamado" em cinza discreto */}
+                    <td className="px-5 py-3.5 text-center font-medium">
+                      {lead.chamado ? (
+                        <span className="inline-flex items-center justify-center text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 font-bold text-[10px]">
+                          Chamado
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center justify-center text-muted-foreground/60 bg-muted/30 px-2.5 py-1 rounded-full border border-border/40 font-medium text-[10px] select-none">
+                          Não chamado
+                        </span>
+                      )}
                     </td>
+
                     <td className="px-5 py-3.5">
                       <button 
                         onClick={() => toggleStatus(lead.id)}
@@ -299,18 +348,9 @@ export default function Respostas() {
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
                         
-                        {/* 3. NAVEGAÇÃO CONFIGURADA AQUI */}
+                        {/* Botão do WhatsApp */}
                         <button 
-                          onClick={() => {
-                            navigate('/dashboard/respostas', { 
-                              state: { 
-                                novoContato: { 
-                                  nome: lead.nome, 
-                                  telefone: lead.telefone 
-                                } 
-                              } 
-                            })
-                          }}
+                          onClick={() => handleWhatsappClick(lead)}
                           className="flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200 transition-colors" 
                           title="Falar no WhatsApp interno"
                         >
