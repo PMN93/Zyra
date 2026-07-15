@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import {
   LayoutDashboard, Users, LayoutGrid, MessageSquare, FileText,
   Tags, BarChart3, Settings, Moon, Sun, LogOut,
-  ChevronDown, ChevronRight, Zap, PanelLeftClose, PanelLeftOpen,
+  ChevronDown, ChevronRight, Zap, PanelLeftClose, PanelLeftOpen,MessageCircle,
 } from 'lucide-react'
 
 interface NavItem {
@@ -20,9 +20,11 @@ const mainNavItems: NavItem[] = [
   { label: 'Dashboard',   icon: LayoutDashboard, href: '/dashboard' }, // Se a home do dashboard for /dashboard
   { label: 'Contatos',    icon: Users,           href: '/dashboard/contatos',  badge: '643' },
   { label: 'Quadro',      icon: LayoutGrid,      href: '/dashboard/quadro'     },
-  { label: 'Respostas',   icon: MessageSquare,    href: '/dashboard/respostas'  },
-  { label: 'Formulários', icon: FileText,         href: '/dashboard/formularios'},
-  { label: 'Tags',        icon: Tags,             href: '/dashboard/tags'       },
+  { label: 'Respostas',   icon: MessageSquare,   href: '/dashboard/respostas'  },
+  { label: 'Formulários', icon: FileText,        href: '/dashboard/formularios'},
+  { label: 'Tags',        icon: Tags,            href: '/dashboard/tags'       },
+  { label: 'Whatsapp',    icon: MessageCircle,   href: '/dashboard/whatsapp'   },
+  
 ]
 
 const systemNavItems: NavItem[] = [

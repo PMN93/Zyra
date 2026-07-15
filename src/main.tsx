@@ -14,6 +14,7 @@ import Dashboard from './pages/Dashboard'
 import Contatos from './pages/Contatos'
 import Quadro from './pages/Quadro'
 import Respostas from './pages/Respostas'
+import Whatsapp from './pages/Whatsapp'
 import Formularios from './pages/Formularios'
 import Tags from './pages/Tags'
 
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
       { path: 'contatos',              element: <Contatos />           },
       { path: 'quadro',                element: <Quadro />             },
       { path: 'respostas',             element: <Respostas />          },
+      { path: 'whatsapp',             element: <Whatsapp />          },
       { path: 'formularios',           element: <Formularios />        },
       { path: 'tags',                  element: <Tags />               },
       {
