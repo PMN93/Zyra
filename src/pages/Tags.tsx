@@ -127,10 +127,10 @@ export default function Tags() {
   })
 
   return (
-    <div className="min-h-screen w-full bg-[#f8f9fa] dark:bg-[#0b1428] p-6 text-gray-800 dark:text-white font-sans overflow-y-auto transition-colors duration-200">
+    <div className="h-full flex flex-col overflow-hidden w-full bg-background text-gray-800 dark:text-white font-sans transition-colors duration-200">
       
       {/* HEADER SUPERIOR */}
-      <div className="w-full bg-white dark:bg-[#15224f] rounded-2xl border border-gray-200 dark:border-[#213575]/40 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-md transition-colors">
+      <div className="w-full bg-card rounded-2xl border border-gray-200 dark:border-[#213575]/40 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-md transition-colors shrink-0">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Tags</h1>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Organize e categorize seus dados</p>
@@ -148,7 +148,7 @@ export default function Tags() {
       </div>
 
       {/* BARRA DE FILTROS E BUSCA */}
-      <div className="w-full bg-white dark:bg-[#15224f] rounded-2xl border border-gray-200 dark:border-[#213575]/40 p-4 mt-6 flex flex-col md:flex-row items-center gap-3 shadow-lg transition-colors">
+      <div className="w-full bg-card rounded-2xl border border-gray-200 dark:border-[#213575]/40 p-4 mt-4 flex flex-col md:flex-row items-center gap-3 shadow-lg transition-colors shrink-0">
         <div className="relative w-full md:flex-1">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 dark:text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -160,7 +160,7 @@ export default function Tags() {
             placeholder="Buscar por nome ou descrição..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-gray-50 dark:bg-[#0b1428]/60 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#2563eb] transition-all"
+            className="w-full pl-9 pr-4 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-background text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-[#2563eb] transition-all"
           />
         </div>
 
@@ -168,7 +168,7 @@ export default function Tags() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-white dark:bg-[#15224f] text-gray-700 dark:text-gray-300 focus:outline-none focus:border-[#2563eb]"
+            className="px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-background text-gray-700 dark:text-gray-300 focus:outline-none focus:border-[#2563eb]"
           >
             <option>Todas as categorias</option>
             <option>Kanban</option>
@@ -177,7 +177,7 @@ export default function Tags() {
           <select
             value={selectedColorFilter}
             onChange={(e) => setSelectedColorFilter(e.target.value)}
-            className="px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-white dark:bg-[#15224f] text-gray-700 dark:text-gray-300 focus:outline-none focus:border-[#2563eb]"
+            className="px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-background text-gray-700 dark:text-gray-300 focus:outline-none focus:border-[#2563eb]"
           >
             <option>Todas as cores</option>
           </select>
@@ -185,23 +185,23 @@ export default function Tags() {
           <button
             type="button"
             onClick={handleClearFilters}
-            className="px-4 py-2 text-sm font-semibold border border-gray-300 dark:border-[#213575] rounded-xl text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-[#0b1428]/30 hover:bg-gray-200 dark:hover:bg-[#213575]/40 transform hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
+            className="px-4 py-2 text-sm font-semibold border border-gray-300 dark:border-[#213575] rounded-xl text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-background hover:bg-gray-200 dark:hover:bg-[#213575]/40 transform hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
           >
             Limpar Filtros
           </button>
         </div>
       </div>
 
-      <div className="mt-3 px-1 text-xs font-semibold text-gray-500 dark:text-gray-400">
+      <div className="mt-3 px-1 text-xs font-semibold text-gray-500 dark:text-gray-400 shrink-0">
         Total: {filteredTags.length} tags
       </div>
 
-      {/* TABELA DE LISTAGEM PRINCIPAL */}
-      <div className="w-full bg-white dark:bg-[#15224f] rounded-2xl border border-gray-200 dark:border-[#213575]/40 shadow-lg overflow-hidden mt-3 transition-colors">
-        <div className="overflow-x-auto">
+      {/* TABELA DE LISTAGEM PRINCIPAL (Com scroll interno isolado) */}
+      <div className="flex-1 flex flex-col w-full bg-card rounded-2xl border border-gray-200 dark:border-[#213575]/40 shadow-lg overflow-hidden mt-2 transition-colors">
+        <div className="overflow-y-auto flex-1">
           <table className="w-full text-left border-collapse table-auto">
-            <thead>
-              <tr className="border-b border-gray-200 dark:border-[#213575] text-[11px] font-bold tracking-wider text-gray-500 dark:text-gray-400 uppercase bg-gray-50 dark:bg-[#0b1428]/20">
+            <thead className="sticky top-0 z-10 bg-card">
+              <tr className="border-b border-gray-200 dark:border-[#213575] text-[11px] font-bold tracking-wider text-gray-500 dark:text-gray-400 uppercase">
                 <th className="px-6 py-3.5">Nome</th>
                 <th className="px-6 py-3.5">Cor</th>
                 <th className="px-6 py-3.5">Categoria</th>
@@ -286,7 +286,7 @@ export default function Tags() {
       {/* MODAL PARA CRIAR NOVA TAG */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-[#15224f] w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] my-auto text-gray-800 dark:text-white transition-colors">
+          <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] my-auto text-gray-800 dark:text-white transition-colors">
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Criar Nova Tag</h2>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Adicione uma nova tag para organizar seus dados</p>
@@ -301,7 +301,7 @@ export default function Tags() {
                   placeholder="Nome da tag"
                   value={novaTagName}
                   onChange={(e) => setNovaTagName(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-gray-50 dark:bg-[#0b1428]/60 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#2563eb] transition-all"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-background text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#2563eb] transition-all"
                 />
               </div>
 
@@ -327,7 +327,7 @@ export default function Tags() {
                     type="color" 
                     value={novaTagCor}
                     onChange={(e) => setNovaTagCor(e.target.value)}
-                    className="w-6 h-5 rounded cursor-pointer border border-gray-300 dark:border-[#213575] bg-transparent"
+                    className="w-6 h-5 rounded cursor-pointer border border-gray-300 dark:border-[#213575] bg-background"
                   />
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -336,7 +336,7 @@ export default function Tags() {
                     type="text" 
                     value={novaTagCor}
                     onChange={(e) => setNovaTagCor(e.target.value)}
-                    className="w-20 px-1.5 py-0.5 border border-gray-300 dark:border-[#213575] rounded text-center font-mono text-[11px] bg-white dark:bg-transparent text-gray-900 dark:text-white"
+                    className="w-20 px-1.5 py-0.5 border border-gray-300 dark:border-[#213575] rounded text-center font-mono text-[11px] bg-background text-gray-900 dark:text-white"
                   />
                 </div>
               </div>
@@ -348,7 +348,7 @@ export default function Tags() {
                   value={novaTagDescricao}
                   onChange={(e) => setNovaTagDescricao(e.target.value)}
                   rows={2}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-gray-50 dark:bg-[#0b1428]/60 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#2563eb] transition-all resize-none"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-background text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#2563eb] transition-all resize-none"
                 />
               </div>
 
@@ -357,7 +357,7 @@ export default function Tags() {
                 <select
                   value={novaTagCategoria}
                   onChange={(e) => setNovaTagCategoria(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-white dark:bg-[#15224f] text-gray-900 dark:text-white focus:outline-none focus:border-[#2563eb]"
+                  className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-background text-gray-900 dark:text-white focus:outline-none focus:border-[#2563eb]"
                 >
                   <option>Kanban</option>
                 </select>
@@ -386,7 +386,7 @@ export default function Tags() {
       {/* MODAL PARA EDITAR TAG (Apenas campo de descrição) */}
       {isEditModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-[#15224f] w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] my-auto text-gray-800 dark:text-white transition-colors">
+          <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] my-auto text-gray-800 dark:text-white transition-colors">
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar Descrição</h2>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Modifique o texto da descrição abaixo</p>
@@ -397,7 +397,7 @@ export default function Tags() {
                 <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">Descrição</label>
                 <textarea
                   placeholder="Escreva a nova descrição..."
-                  value={editTagDescricao} // Traz o texto que a pessoa já escreveu
+                  value={editTagDescricao}
                   onChange={(e) => setEditTagDescricao(e.target.value)}
                   rows={4}
                   className="w-full px-3 py-2 text-sm rounded-xl border border-gray-300 dark:border-[#213575] bg-gray-50 dark:bg-[#0b1428]/60 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:border-[#2563eb] transition-all resize-none"

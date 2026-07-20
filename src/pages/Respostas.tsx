@@ -172,26 +172,19 @@ export default function Respostas() {
       {/* CABEÇALHO */}
       <header className="flex items-center justify-between w-full bg-card border border-border rounded-2xl px-4 py-3 shadow-sm shrink-0">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50 text-blue-500 border border-blue-100">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-blue-500 border border-primary/10">
             <Sparkles className="h-4 w-4" />
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-bold text-foreground leading-none">Respostas</span>
             <span className="text-[10px] text-muted-foreground mt-1">1954 respostas recebidas</span>
           </div>
-          <span className="ml-2 rounded-full bg-blue-50 px-3 py-1 text-[11px] font-semibold text-blue-600 border border-blue-100/50">
+          <span className="ml-2 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-blue-600 border border-primary/10">
             Visão Geral
           </span>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-            <input 
-              placeholder="Buscar..." 
-              className="h-8 w-48 rounded-full border border-border bg-background pl-8 pr-3 text-xs placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-            />
-          </div>
           <button className="relative flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background hover:bg-muted/50 text-muted-foreground transition-colors">
             <Bell className="h-4 w-4" />
             <span className="absolute -top-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-blue-500 text-[9px] font-bold text-white border-2 border-card">
@@ -464,7 +457,7 @@ export default function Respostas() {
                 <div className="flex flex-col gap-1.5">
                   <span className="text-[10px] font-semibold text-muted-foreground">Status atual:</span>
                   <div className="flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-2 text-xs font-semibold w-fit">
-                    <span className={cn("h-2 w-2 rounded-full", activeDetailsLead.status === 'Aprovado' ? 'bg-emerald-500' : 'bg-rose-500')}></span>
+                    <span className={cn("h-2 w-2 rounded-full", activeDetailsLead.status === 'Aprovado' ? 'bg-rose-500' : 'bg-rose-500')}></span>
                     {activeDetailsLead.status}
                   </div>
                 </div>
