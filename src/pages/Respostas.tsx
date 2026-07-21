@@ -300,7 +300,7 @@ export default function Respostas() {
                     {/* COLUNA WHATSAPP */}
                     <td className="px-5 py-3.5 text-center font-medium">
                       {lead.chamado ? (
-                        <span className="inline-flex items-center justify-center text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 font-bold text-[10px]">
+                        <span className="inline-flex items-center justify-center text-emerald-600 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 font-bold text-[10px]">
                           Chamado
                         </span>
                       ) : (
@@ -417,7 +417,12 @@ export default function Respostas() {
 
       {/* ================= MODAL DETALHES DA RESPOSTA ================= */}
       {activeDetailsLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setActiveDetailsLead(null)
+          }}
+        >
           <div className="relative w-full max-w-xl bg-card border border-border rounded-2xl shadow-xl flex flex-col overflow-hidden max-h-[90vh]">
             <div className="p-5 pb-3 flex justify-between items-start">
               <div>
@@ -489,7 +494,12 @@ export default function Respostas() {
 
       {/* ================= MODAL CONFIRMAR EXCLUSÃO ================= */}
       {leadToDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setLeadToDelete(null)
+          }}
+        >
           <div className="w-full max-w-sm bg-card border border-border rounded-2xl shadow-xl p-5 flex flex-col gap-4">
             <div className="space-y-1">
               <h2 className="text-sm font-bold text-foreground">Confirmar Exclusão</h2>

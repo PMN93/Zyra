@@ -180,7 +180,7 @@ export default function Contatos() {
               placeholder={getPlaceholderText()} 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="h-10 w-full rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 pl-10 pr-4 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400/80 focus:border-blue-200 dark:focus:border-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all"
+              className="h-9 w-full rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 pl-10 pr-4 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400/80 focus:border-blue-200 dark:focus:border-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-all"
             />
           </div>
 
@@ -188,7 +188,7 @@ export default function Contatos() {
             <button 
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className={cn(
-                "flex h-10 items-center justify-center gap-2 rounded-2xl border px-5 text-xs font-semibold transition-all select-none shadow-[0_4px_12px_rgba(0,0,0,0.02)] dark:shadow-none",
+                "flex h-9 items-center justify-center gap-2 rounded-2xl border px-5 text-xs font-semibold transition-all select-none shadow-[0_4px_12px_rgba(0,0,0,0.02)] dark:shadow-none",
                 filtroAtivo !== 'todos' 
                   ? "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-500/30" 
                   : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
@@ -247,7 +247,7 @@ export default function Contatos() {
 
         <button 
           onClick={() => setIsNewContactModalOpen(true)}
-          className="flex h-10 items-center justify-center gap-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-[0_8px_20px_rgba(37,99,235,0.24)] transition-all hover:translate-y-[-1px] active:translate-y-[0px] px-5"
+          className="flex h-9 items-center justify-center gap-1.5 rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-[0_8px_20px_rgba(37,99,235,0.24)] transition-all hover:translate-y-[-1px] active:translate-y-[0px] px-5"
         >
           <Plus className="h-4 w-4" />
           Novo Contato
@@ -346,8 +346,14 @@ export default function Contatos() {
         </div>
       </div>
 
+      {/* Modal: Novo Contato */}
       {isNewContactModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setIsNewContactModalOpen(false)
+          }}
+        >
           <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden">
             <div className="p-5 pb-3 flex justify-between items-start border-b border-slate-100 dark:border-slate-800">
               <div>
@@ -371,7 +377,7 @@ export default function Contatos() {
                   placeholder="Ex: João da Silva"
                   value={newContato.nome}
                   onChange={(e) => setNewContato({ ...newContato, nome: e.target.value })}
-                  className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                  className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                 />
               </div>
 
@@ -383,7 +389,7 @@ export default function Contatos() {
                   placeholder="Ex: joao@email.com"
                   value={newContato.email}
                   onChange={(e) => setNewContato({ ...newContato, email: e.target.value })}
-                  className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                  className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                 />
               </div>
 
@@ -395,7 +401,7 @@ export default function Contatos() {
                   placeholder="Ex: (11) 99999-9999"
                   value={newContato.telefone}
                   onChange={(e) => setNewContato({ ...newContato, telefone: formatarTelefone(e.target.value) })}
-                  className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                  className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                 />
               </div>
 
@@ -405,7 +411,7 @@ export default function Contatos() {
                   <select 
                     value={newContato.tag}
                     onChange={(e) => setNewContato({ ...newContato, tag: e.target.value as Contato['tag'] })}
-                    className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                    className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                   >
                     <option value="Cliente">Cliente</option>
                     <option value="Lead">Lead</option>
@@ -419,7 +425,7 @@ export default function Contatos() {
                   <select 
                     value={newContato.status}
                     onChange={(e) => setNewContato({ ...newContato, status: e.target.value as Contato['status'] })}
-                    className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                    className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                   >
                     <option value="Ativo">Ativo</option>
                     <option value="Inativo">Inativo</option>
@@ -447,8 +453,14 @@ export default function Contatos() {
         </div>
       )}
 
+      {/* Modal: Editar Contato */}
       {editingContato && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setEditingContato(null)
+          }}
+        >
           <div className="w-full max-w-md bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden">
             <div className="p-5 pb-3 flex justify-between items-start border-b border-slate-100 dark:border-slate-800">
               <div>
@@ -471,7 +483,7 @@ export default function Contatos() {
                   required
                   value={editingContato.nome}
                   onChange={(e) => setEditingContato({ ...editingContato, nome: e.target.value })}
-                  className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                  className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                 />
               </div>
 
@@ -482,7 +494,7 @@ export default function Contatos() {
                   required
                   value={editingContato.email}
                   onChange={(e) => setEditingContato({ ...editingContato, email: e.target.value })}
-                  className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                  className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                 />
               </div>
 
@@ -493,7 +505,7 @@ export default function Contatos() {
                   required
                   value={editingContato.telefone}
                   onChange={(e) => setEditingContato({ ...editingContato, telefone: formatarTelefone(e.target.value) })}
-                  className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                  className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-3 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                 />
               </div>
 
@@ -503,7 +515,7 @@ export default function Contatos() {
                   <select 
                     value={editingContato.tag}
                     onChange={(e) => setEditingContato({ ...editingContato, tag: e.target.value as Contato['tag'] })}
-                    className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                    className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                   >
                     <option value="Cliente">Cliente</option>
                     <option value="Lead">Lead</option>
@@ -517,7 +529,7 @@ export default function Contatos() {
                   <select 
                     value={editingContato.status}
                     onChange={(e) => setEditingContato({ ...editingContato, status: e.target.value as Contato['status'] })}
-                    className="h-9.5 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
+                    className="h-9 w-full rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950 px-2.5 text-xs text-slate-700 dark:text-slate-200 focus:border-blue-200 dark:focus:border-blue-800 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/5 transition-colors"
                   >
                     <option value="Ativo">Ativo</option>
                     <option value="Inativo">Inativo</option>
@@ -545,8 +557,14 @@ export default function Contatos() {
         </div>
       )}
 
+      {/* Modal: Excluir Contato */}
       {deletingContato && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm p-4">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 dark:bg-black/50 backdrop-blur-sm p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setDeletingContato(null)
+          }}
+        >
           <div className="w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-5 flex flex-col gap-4">
             <div className="space-y-1">
               <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100">Excluir Contato</h2>
@@ -555,16 +573,16 @@ export default function Contatos() {
               </p>
             </div>
             
-            <div className="flex gap-2.5 justify-end">
+            <div className="flex gap-2.5 justify-end mt-2">
               <button 
-                onClick={() => setDeletingContato(null)} 
-                className="flex-1 sm:flex-none px-4 py-2 rounded-xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-300 transition-colors"
+                onClick={() => setDeletingContato(null)}
+                className="px-4 py-2 rounded-xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-300 transition-colors"
               >
                 Cancelar
               </button>
               <button 
-                onClick={handleDeleteConfirm} 
-                className="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-md shadow-rose-600/10 transition-colors"
+                onClick={handleDeleteConfirm}
+                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-md shadow-rose-600/10 transition-colors"
               >
                 Excluir
               </button>
@@ -572,7 +590,6 @@ export default function Contatos() {
           </div>
         </div>
       )}
-
     </div>
   )
 }

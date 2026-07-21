@@ -285,7 +285,12 @@ export default function Tags() {
 
       {/* MODAL PARA CRIAR NOVA TAG */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setIsModalOpen(false)
+          }}
+        >
           <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] my-auto text-gray-800 dark:text-white transition-colors">
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Criar Nova Tag</h2>
@@ -385,7 +390,15 @@ export default function Tags() {
 
       {/* MODAL PARA EDITAR TAG (Apenas campo de descrição) */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsEditModalOpen(false)
+              setEditingTagId(null)
+            }
+          }}
+        >
           <div className="bg-card w-full max-w-md rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] my-auto text-gray-800 dark:text-white transition-colors">
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Editar Descrição</h2>
@@ -429,7 +442,15 @@ export default function Tags() {
 
       {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */}
       {isDeleteModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsDeleteModalOpen(false)
+              setTagIdToDelete(null)
+            }
+          }}
+        >
           <div className="bg-white dark:bg-[#15224f] w-full max-w-sm rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-[#213575] text-gray-800 dark:text-white transition-colors">
             <div className="flex flex-col items-center text-center">
               <div className="p-3 bg-red-100 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-full mb-4 border border-red-200 dark:border-red-500/20">
